@@ -2,7 +2,7 @@
  * @Author: Liangbofan
  * @Date: 2022-05-09 16:06:01
  * @LastEditors: Liangbofan
- * @LastEditTime: 2022-05-09 16:17:30
+ * @LastEditTime: 2022-05-09 17:34:11
  */
 'use strict';
 const defaultAvatar = 'http://s.yezgea02.com/1615973940679/WeChat77d6d2ac093e247c361f0b8a7aeb6c2a.png';
@@ -57,6 +57,43 @@ class UserController extends Controller {
         data: null,
       };
     }
+  }
+
+  async login() {
+    const { app, ctx } = this;
+    const { username, password } = ctx.request.body;
+    const userInfo = await ctx.service.user.getUserByName(username);
+    // 没找到说明没有该用户
+    if (!userInfo || !userInfo.id) {
+      ctx.body = {
+        code: 500,
+        msg: '账号不存在',
+        data: null,
+      };
+      return;
+    }
+    // 找到用户，并且判断输入密码与数据库中用户密码。
+    if (userInfo && password !== userInfo.password) {
+      ctx.body = {
+        code: 500,
+        msg: '账号密码错误',
+        data: null,
+      };
+      return;
+    }
+    const token = app.jwt.sign({
+      id: userInfo.id,
+      username: userInfo.username,
+      exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // token 有效期为 24 小时
+    }, app.config.jwt.secret);
+
+    ctx.body = {
+      code: 200,
+      message: '登录成功',
+      data: {
+        token,
+      },
+    };
   }
 }
 

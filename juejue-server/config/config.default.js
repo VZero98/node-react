@@ -2,7 +2,7 @@
  * @Author: Liangbofan
  * @Date: 2022-05-09 14:31:41
  * @LastEditors: Liangbofan
- * @LastEditTime: 2022-05-09 16:05:37
+ * @LastEditTime: 2022-05-09 17:07:12
  */
 /* eslint valid-jsdoc: "off" */
 
@@ -34,6 +34,18 @@ module.exports = appInfo => {
     },
     app: true,
     agent: false,
+  };
+
+  config.jwt = {
+    secret: 'V2ero',
+  };
+
+  config.security = {
+    csrf: {
+      enable: false,
+      ignoreJSON: true,
+    },
+    domainWhiteList: [ '*' ], // 配置白名单
   };
 
   // add your user config here
