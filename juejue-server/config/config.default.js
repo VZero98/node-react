@@ -1,3 +1,9 @@
+/*
+ * @Author: Liangbofan
+ * @Date: 2022-05-09 14:31:41
+ * @LastEditors: Liangbofan
+ * @LastEditTime: 2022-05-09 16:05:37
+ */
 /* eslint valid-jsdoc: "off" */
 
 'use strict';
@@ -17,6 +23,18 @@ module.exports = appInfo => {
 
   // add your middleware config here
   config.middleware = [];
+
+  config.mysql = {
+    client: {
+      host: 'localhost',
+      port: '3306',
+      user: 'root',
+      password: '123456',
+      database: 'juejue-cost',
+    },
+    app: true,
+    agent: false,
+  };
 
   // add your user config here
   const userConfig = {
