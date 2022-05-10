@@ -2,7 +2,7 @@
  * @Author: Liangbofan
  * @Date: 2022-05-09 16:06:01
  * @LastEditors: Liangbofan
- * @LastEditTime: 2022-05-09 17:34:11
+ * @LastEditTime: 2022-05-10 09:26:07
  */
 'use strict';
 const defaultAvatar = 'http://s.yezgea02.com/1615973940679/WeChat77d6d2ac093e247c361f0b8a7aeb6c2a.png';
@@ -92,6 +92,19 @@ class UserController extends Controller {
       message: '登录成功',
       data: {
         token,
+      },
+    };
+  }
+
+  async test() {
+    const { ctx, app } = this;
+    const token = ctx.request.header.authorization;
+    const decode = await app.jwt.verify(token, app.config.jwt.secret);
+    ctx.body = {
+      code: 200,
+      message: '获取成功',
+      data: {
+        ...decode,
       },
     };
   }
