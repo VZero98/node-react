@@ -2,7 +2,7 @@
  * @Author: Liangbofan
  * @Date: 2022-05-09 16:06:01
  * @LastEditors: Liangbofan
- * @LastEditTime: 2022-05-10 09:26:07
+ * @LastEditTime: 2022-05-10 10:55:42
  */
 'use strict';
 const defaultAvatar = 'http://s.yezgea02.com/1615973940679/WeChat77d6d2ac093e247c361f0b8a7aeb6c2a.png';
@@ -94,6 +94,53 @@ class UserController extends Controller {
         token,
       },
     };
+  }
+
+  async getUserInfo() {
+    const { ctx, app } = this;
+    const token = ctx.request.header.authorization;
+    const decode = app.jwt.verify(token, app.config.jwt.secret);
+    const userInfo = await ctx.service.user.getUserByName(decode.username);
+    ctx.body = {
+      code: 200,
+      msg: '请求成功',
+      data: {
+        id: userInfo.id,
+        username: userInfo.username,
+        signature: userInfo.signature || '',
+        avatar: userInfo.avatar || defaultAvatar,
+      },
+    };
+  }
+
+  async editUserInfo() {
+    const { ctx, app } = this;
+    const { signature = '' } = ctx.request.body;
+    try {
+      const token = ctx.request.header.authorization;
+      const decode = app.jwt.verify(token, app.config.jwt.secret);
+      if (!decode) {
+        return;
+      }
+      const user_id = decode.id;
+      const userInfo = await ctx.service.user.getUserByName(decode.username);
+      // eslint-disable-next-line no-unused-vars
+      const result = await ctx.service.user.editUserInfo({
+        ...userInfo,
+        signature,
+      });
+      ctx.body = {
+        code: 200,
+        msg: '请求成功',
+        data: {
+          id: user_id,
+          signature,
+          username: userInfo.username,
+        },
+      };
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async test() {
