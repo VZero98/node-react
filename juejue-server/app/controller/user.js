@@ -2,7 +2,7 @@
  * @Author: Liangbofan
  * @Date: 2022-05-09 16:06:01
  * @LastEditors: Liangbofan
- * @LastEditTime: 2022-05-10 10:55:42
+ * @LastEditTime: 2022-05-10 17:43:55
  */
 'use strict';
 const defaultAvatar = 'http://s.yezgea02.com/1615973940679/WeChat77d6d2ac093e247c361f0b8a7aeb6c2a.png';
@@ -115,7 +115,7 @@ class UserController extends Controller {
 
   async editUserInfo() {
     const { ctx, app } = this;
-    const { signature = '' } = ctx.request.body;
+    const { signature = '', avatar = '' } = ctx.request.body;
     try {
       const token = ctx.request.header.authorization;
       const decode = app.jwt.verify(token, app.config.jwt.secret);
@@ -128,6 +128,7 @@ class UserController extends Controller {
       const result = await ctx.service.user.editUserInfo({
         ...userInfo,
         signature,
+        avatar,
       });
       ctx.body = {
         code: 200,
@@ -136,6 +137,7 @@ class UserController extends Controller {
           id: user_id,
           signature,
           username: userInfo.username,
+          avatar,
         },
       };
     } catch (err) {
