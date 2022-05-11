@@ -33,7 +33,39 @@ class BillService extends Service {
     // eslint-disable-next-line no-unused-vars
     const { ctx, app } = this;
     try {
-      const result = await app.mysql.get('bill', { id, user_id })
+      const result = await app.mysql.get('bill', { id, user_id });
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async update(params) {
+    // eslint-disable-next-line no-unused-vars
+    const { ctx, app } = this;
+    try {
+      const result = await app.mysql.update('bill', {
+        ...params,
+      }, {
+        id: params.id,
+        user_id: params.user_id,
+      });
+      return result;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async delete(id, user_id) {
+    // eslint-disable-next-line no-unused-vars
+    const { ctx, app } = this;
+    try {
+      const result = await app.mysql.delete('bill', {
+        id,
+        user_id,
+      });
       return result;
     } catch (error) {
       console.log(error);

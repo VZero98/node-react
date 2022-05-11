@@ -2,7 +2,7 @@
  * @Author: Liangbofan
  * @Date: 2022-05-09 14:31:41
  * @LastEditors: Liangbofan
- * @LastEditTime: 2022-05-10 20:08:25
+ * @LastEditTime: 2022-05-11 16:55:32
  */
 'use strict';
 
@@ -24,4 +24,7 @@ module.exports = app => {
   router.post('/api/bill/add', _jwt, controller.bill.add);
   router.get('/api/bill/list', _jwt, controller.bill.list); // 获取账单列表
   router.get('/api/bill/detail', _jwt, controller.bill.detail); // 获取详情
+  router.post('/api/bill/update', _jwt, controller.bill.update); // 账单更新
+  router.post('/api/bill/delete', _jwt, controller.bill.delete); // 删除账单
+  router.get('/api/bill/data', _jwt, controller.bill.data); // 获取数据
 };
